@@ -138,6 +138,7 @@
   }
   .identity-input:focus { border-color: var(--purple-dark); }
   .identity-input::placeholder { color: var(--text-muted); font-weight: 400; font-size: 15px; }
+  .identity-print { display: none; }
   .hero-sub {
     font-size: 13px;
     color: var(--text-muted);
@@ -305,13 +306,84 @@
     border-color: var(--purple);
   }
   .btn-primary:hover { background: var(--purple-dark); border-color: var(--purple-dark); }
+  .page-nav {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+  .nav-btn,
+  .top-btn {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    background: rgba(255,255,255,0.92);
+    border: 1px solid var(--border-hover);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 13px;
+  }
+  .top-btn {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 50;
+    padding: 10px 14px;
+  }
+  .nav-btn:hover,
+  .top-btn:hover { background: var(--gray-light); color: var(--text-primary); }
 
   /* 인쇄용 설정 */
   @media print {
     body { background: white; padding: 1rem; }
-    .actions, .prog-wrap { display: none !important; }
+    .actions, .prog-wrap, .page-nav, .top-btn { display: none !important; }
     .card:focus-within { box-shadow: none; }
-    textarea { min-height: auto; }
+    .section-head {
+      break-after: avoid;
+      page-break-after: avoid;
+      margin-top: 1.2rem;
+    }
+    .g3,
+    .g2,
+    .g4,
+    .g3k {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .card {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      overflow: hidden;
+    }
+    .hero { margin-bottom: 1.7rem; padding-top: 0.35rem; }
+    .hero-title { font-size: 30px; margin-bottom: 0.8rem; }
+    .identity-row { flex-wrap: wrap; gap: 5px; line-height: 1.55; }
+    .identity-label { font-size: 15px; }
+    .identity-input { display: none; }
+    .identity-print {
+      display: inline-block;
+      max-width: 430px;
+      min-width: 220px;
+      border-bottom: 1.5px solid var(--purple);
+      padding: 0 6px 2px;
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: keep-all;
+    }
+    textarea {
+      min-height: auto;
+      overflow: hidden !important;
+    }
   }
 
   /* Fade-in */
@@ -331,6 +403,9 @@
 <body>
 
 <div class="page">
+  <div class="page-nav">
+    <a class="nav-btn" href="./index.html">홈가기</a>
+  </div>
 
   <div class="hero">
     <div class="hero-eyebrow">Career Vision Board</div>
@@ -338,6 +413,7 @@
     <div class="identity-row">
       <span class="identity-label">5년 후, 나는</span>
       <input class="identity-input" id="f_id" type="text" placeholder="나를 한 문장으로..." maxlength="36"/>
+      <span class="identity-print" id="f_id_print"></span>
       <span class="identity-label">이다</span>
     </div>
     <div class="hero-sub">지금으로부터 5년 뒤, 내가 바라는 커리어의 모습을 구체적으로 적어보세요</div>
@@ -441,10 +517,16 @@
 
 </div>
 
+<button class="top-btn" type="button" onclick="scrollToTop()">맨 위로</button>
+
 <script>
 const FIELDS = ['f_id','f_like','f_skill','f_edge','f_expertise','f_income','f_network','f_position','f_balance','f_why','f_y1','f_y3','f_y5'];
 const COUNTED = FIELDS.filter(f => f !== 'f_id');
 const KEY = 'vb_career_v1';
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 function updateProg() {
   const n = COUNTED.filter(id => {
@@ -466,9 +548,10 @@ function saveAll() {
 
 function printVisionBoard() {
   saveAll();
+  syncPrintFields();
   document.querySelectorAll('textarea').forEach(el => {
     el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
+    el.style.height = (el.scrollHeight + 24) + 'px';
   });
   window.print();
 }
@@ -490,6 +573,7 @@ function printVisionBoardWindow() {
 }
 
 function buildVisionBoardPrintHtml() {
+  syncPrintFields();
   const sourcePage = document.querySelector('.page');
   const page = sourcePage.cloneNode(true);
   const sourceFields = sourcePage.querySelectorAll('input, textarea');
@@ -545,6 +629,7 @@ ${styles}
 
 function downloadVisionBoardHtml() {
   saveAll();
+  syncPrintFields();
   const html = buildVisionBoardPrintHtml();
   const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
   const link = document.createElement('a');
@@ -566,6 +651,14 @@ function escapeHtml(value) {
   }[ch]));
 }
 
+function syncPrintFields() {
+  const identity = document.getElementById('f_id');
+  const identityPrint = document.getElementById('f_id_print');
+  if (identity && identityPrint) {
+    identityPrint.textContent = identity.value.trim() || identity.placeholder || '';
+  }
+}
+
 function loadAll() {
   try {
     const raw = localStorage.getItem(KEY);
@@ -573,6 +666,7 @@ function loadAll() {
     const d = JSON.parse(raw);
     FIELDS.forEach(id => { const el = document.getElementById(id); if (el && d[id]) el.value = d[id]; });
     updateProg();
+    syncPrintFields();
   } catch(e) {}
 }
 
@@ -585,10 +679,11 @@ function clearAll() {
 
 FIELDS.forEach(id => {
   const el = document.getElementById(id);
-  if (el) el.addEventListener('input', () => { updateProg(); });
+  if (el) el.addEventListener('input', () => { updateProg(); syncPrintFields(); });
 });
 
 loadAll();
+syncPrintFields();
 </script>
 </body>
 </html>

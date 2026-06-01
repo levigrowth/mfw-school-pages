@@ -215,6 +215,7 @@ canvas.hovering { cursor: grab; }
   display: flex;
   align-items: center;
   gap: 5px;
+  text-decoration: none;
   transition: all 0.15s;
   white-space: nowrap;
 }
@@ -222,10 +223,27 @@ canvas.hovering { cursor: grab; }
 .btn-accent { background: var(--accent); color: white; border-color: var(--accent); }
 .btn-accent:hover { background: #c44a29; border-color: #c44a29; }
 .save-ok { font-size: 12px; color: var(--positive); display: none; align-items: center; gap: 4px; }
+.top-btn {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 50;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text2);
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  padding: 10px 14px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.top-btn:hover { background: var(--bg3); color: var(--text); }
 
 /* 인쇄용 설정 */
 @media print {
-  .header-right, .toolbar, .hint-bar { display: none !important; }
+  .header-right, .toolbar, .hint-bar, .top-btn { display: none !important; }
   body { background: white; }
   .header { padding: 1rem 0; border-bottom: none; }
   .main { padding: 0; }
@@ -242,6 +260,7 @@ canvas.hovering { cursor: grab; }
   </div>
   <div class="header-right">
     <span class="save-ok" id="save-ok">✓ 저장됨</span>
+    <a class="btn" href="./index.html">홈가기</a>
     <button class="btn" onclick="clearAll()">↺ 초기화</button>
     <button class="btn" onclick="printLifeGraph()">⎙ 인쇄 (PDF)</button>
     <button class="btn" onclick="downloadLifeGraphImage()">⬇ 이미지 저장</button>
@@ -307,11 +326,17 @@ canvas.hovering { cursor: grab; }
   </div>
 </div>
 
+<button class="top-btn" type="button" onclick="scrollToTop()">맨 위로</button>
+
 <script>
 const canvas = document.getElementById('graph');
 const ctx = canvas.getContext('2d');
 const wrap = document.getElementById('canvas-wrap');
 const popup = document.getElementById('point-popup');
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 let points = [
   { age: 8,  score: -60, memo: '예시: 힘들었던 시기' },
