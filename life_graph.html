@@ -240,14 +240,48 @@ canvas.hovering { cursor: grab; }
   box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 .top-btn:hover { background: var(--bg3); color: var(--text); }
+.print-page { display: none; }
 
 /* 인쇄용 설정 */
 @media print {
+  @page { size: landscape; margin: 10mm; }
   .header-right, .toolbar, .hint-bar, .top-btn { display: none !important; }
   body { background: white; }
   .header { padding: 1rem 0; border-bottom: none; }
   .main { padding: 0; }
   canvas { box-shadow: none; border: 1px solid #ccc; }
+  body.printing-life {
+    padding: 0 !important;
+    display: block;
+    min-height: auto;
+  }
+  body.printing-life > :not(.print-page) {
+    display: none !important;
+  }
+  body.printing-life .print-page {
+    display: block !important;
+    width: 100%;
+  }
+  .print-page h1 {
+    margin: 0 0 4px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    font-style: italic;
+    font-weight: 400;
+  }
+  .print-page p {
+    margin: 0 0 8px;
+    color: #777;
+    font-size: 11px;
+  }
+  .print-page img {
+    display: block;
+    width: 100%;
+    max-height: 165mm;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
 }
 </style>
 </head>
@@ -327,6 +361,12 @@ canvas.hovering { cursor: grab; }
 </div>
 
 <button class="top-btn" type="button" onclick="scrollToTop()">맨 위로</button>
+
+<div class="print-page" id="print-page" aria-hidden="true">
+  <h1 id="print-title">나의 인생그래프</h1>
+  <p id="print-subtitle"></p>
+  <img id="print-image" alt="인생그래프"/>
+</div>
 
 <script>
 const canvas = document.getElementById('graph');
@@ -937,8 +977,16 @@ function rebuildAxis() {
 
 function printLifeGraph() {
   draw();
+  document.getElementById('print-title').textContent = document.querySelector('.header-left h1')?.textContent || 'Life Graph';
+  document.getElementById('print-subtitle').textContent = `Age ${ageStart} - ${ageEnd}`;
+  document.getElementById('print-image').src = canvas.toDataURL('image/png');
+  document.body.classList.add('printing-life');
   window.print();
 }
+
+window.addEventListener('afterprint', () => {
+  document.body.classList.remove('printing-life');
+});
 
 function printLifeGraphWindow() {
   draw();
