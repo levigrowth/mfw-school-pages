@@ -1,6 +1,10 @@
 # 사관학교 1주차 과제 사이트 안내서
 
-- 배포 주소: https://mfw-school-pages.vercel.app
+<a href="https://mfw-school-pages.vercel.app" target="_blank">
+  배포 페이지 열기
+</a>
+
+<img src="/메인화면.png" alt="비전보드 예시" width="320">
 
 ## 목차
 
@@ -87,6 +91,8 @@ https://mfw-school-pages.vercel.app
 - 비전보드 질문 수정: `vision_board.html`에서 입력칸 제목, 안내 문구, placeholder 문구, 버튼 문구를 수정합니다.
 - 인생그래프 문구 수정: `life_graph.html`에서 페이지 제목, 버튼 문구, 그래프 안내 문구, 저장/인쇄 관련 문구를 수정합니다.
 
+-----
+
 ## 5. Git 사용 방법
 
 ### 5.1 Git 설치 확인
@@ -128,6 +134,8 @@ git push
 ```
 
 GitHub 저장소가 Vercel과 연결되어 있다면, `git push` 후 자동으로 배포됩니다.
+
+-----
 
 ## 6. 수정 시 주의사항
 
