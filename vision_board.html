@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>5년 후 커리어 비전보드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+  :root {
+    --purple: #7F77DD;
+    --purple-light: #EEEDFE;
+    --purple-dark: #3C3489;
+    --blue: #378ADD;
+    --blue-light: #E6F1FB;
+    --blue-dark: #0C447C;
+    --teal: #1D9E75;
+    --teal-light: #E1F5EE;
+    --teal-dark: #085041;
+    --coral: #D85A30;
+    --coral-light: #FAECE7;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --pink: #D4537E;
+    --pink-light: #FBEAF0;
+    --gray: #888780;
+    --gray-light: #F1EFE8;
+    --text-primary: #1a1a1a;
+    --text-secondary: #555;
+    --text-muted: #999;
+    --border: #e5e3dc;
+    --border-hover: #ccc;
+    --bg: #faf9f6;
+    --bg-card: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* Iframe 이중 스크롤 방지를 위한 최소 높이 제한 제거 및 오버플로우 정리 */
+  html, body { width: 100%; overflow-x: hidden; }
+  
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    padding: 2rem 0 4rem 0;
+  }
+
+  /* 로컬 저장 안내 */
+  .storage-note {
+    margin-right: auto;
+    color: var(--text-muted);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .storage-note b {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* Header */
+  .hero {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding: 1rem 1rem 2rem;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--purple);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--purple);
+    opacity: 0.4;
+  }
+  .hero-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 36px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+  }
+  .hero-title span {
+    font-style: normal;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+  .identity-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 0.75rem;
+  }
+  .identity-label {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+  .identity-input {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    border-bottom: 2px solid var(--purple);
+    background: transparent;
+    color: var(--text-primary);
+    width: 260px;
+    text-align: center;
+    padding: 4px 8px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .identity-input:focus { border-color: var(--purple-dark); }
+  .identity-input::placeholder { color: var(--text-muted); font-weight: 400; font-size: 15px; }
+  .hero-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* Progress */
+  .prog-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .prog-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .prog-fill {
+    height: 100%;
+    background: var(--purple);
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+  .prog-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* Section */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1.75rem 0 0.75rem;
+  }
+  .section-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 99px;
+    white-space: nowrap;
+  }
+  .tag-purple { background: var(--purple-light); color: var(--purple-dark); }
+  .tag-teal { background: var(--teal-light); color: var(--teal-dark); }
+
+  /* Grid */
+  .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
+  .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
+  .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
+  .g3k { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
+
+  @media (max-width: 700px) {
+    .g3, .g4, .g3k { grid-template-columns: repeat(2, 1fr); }
+    .g2 { grid-template-columns: 1fr; }
+    .hero-title { font-size: 26px; }
+    .identity-input { width: 180px; }
+  }
+  @media (max-width: 480px) {
+    .g3, .g4, .g3k { grid-template-columns: 1fr; }
+  }
+
+  /* Card */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .card:hover { border-color: var(--border-hover); }
+  .card:focus-within { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(127,119,221,0.1); }
+
+  .card-top-purple { border-top: 3px solid var(--purple); }
+  .card-top-blue { border-top: 3px solid var(--blue); }
+  .card-top-teal { border-top: 3px solid var(--teal); }
+  .card-top-coral { border-top: 3px solid var(--coral); }
+  .card-top-amber { border-top: 3px solid var(--amber); }
+  .card-top-pink { border-top: 3px solid var(--pink); }
+  .card-top-gray { border-top: 3px solid var(--gray); }
+
+  .card-head { display: flex; align-items: center; gap: 7px; }
+  .card-icon { font-size: 15px; }
+  .card-name { font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+  .card-hint { font-size: 11px; color: var(--text-muted); line-height: 1.55; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 99px;
+    width: fit-content;
+    letter-spacing: 0.02em;
+  }
+  .badge-blue { background: var(--blue-light); color: var(--blue-dark); }
+  .badge-teal { background: var(--teal-light); color: var(--teal-dark); }
+
+  textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    resize: none;
+    font-size: 13px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text-primary);
+    outline: none;
+    line-height: 1.7;
+    min-height: 80px;
+  }
+  textarea::placeholder { color: #c0bdb5; font-size: 12px; }
+
+  /* Actions */
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .save-ok {
+    font-size: 12px;
+    color: var(--teal);
+    display: none;
+    align-items: center;
+    gap: 4px;
+  }
+  .btn {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-hover);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .btn:hover { background: var(--gray-light); }
+  .btn-primary {
+    background: var(--purple);
+    color: white;
+    border-color: var(--purple);
+  }
+  .btn-primary:hover { background: var(--purple-dark); border-color: var(--purple-dark); }
+
+  /* 인쇄용 설정 */
+  @media print {
+    body { background: white; padding: 1rem; }
+    .actions, .prog-wrap { display: none !important; }
+    .card:focus-within { box-shadow: none; }
+    textarea { min-height: auto; }
+  }
+
+  /* Fade-in */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .page > * { animation: fadeUp 0.4s ease both; }
+  .page > *:nth-child(2) { animation-delay: 0.05s; }
+  .page > *:nth-child(3) { animation-delay: 0.1s; }
+  .page > *:nth-child(4) { animation-delay: 0.15s; }
+  .page > *:nth-child(5) { animation-delay: 0.2s; }
+  .page > *:nth-child(6) { animation-delay: 0.25s; }
+  .page > *:nth-child(7) { animation-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-eyebrow">Career Vision Board</div>
+    <div class="hero-title">나의 <span>5년 후</span> 커리어를 그린다</div>
+    <div class="identity-row">
+      <span class="identity-label">5년 후, 나는</span>
+      <input class="identity-input" id="f_id" type="text" placeholder="나를 한 문장으로..." maxlength="36"/>
+      <span class="identity-label">이다</span>
+    </div>
+    <div class="hero-sub">지금으로부터 5년 뒤, 내가 바라는 커리어의 모습을 구체적으로 적어보세요</div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-bar"><div class="prog-fill" id="pf" style="width:0%"></div></div>
+    <div class="prog-label" id="pl">0 / 11 작성</div>
+  </div>
+
+  <div class="section-head">
+    <span class="section-tag tag-purple">현재의 나 — 출발점 파악</span>
+  </div>
+  <div class="g3">
+    <div class="card card-top-purple">
+      <div class="card-head"><i class="ti ti-heart card-icon" style="color:var(--purple)" aria-hidden="true"></i><span class="card-name">좋아하는 것</span></div>
+      <div class="card-hint">시간 가는 줄 모르고 빠져드는 것은? 커리어와 연결되는 관심사는?</div>
+      <textarea id="f_like" placeholder="관심사, 열정, 에너지가 생기는 것들..."></textarea>
+    </div>
+    <div class="card card-top-purple">
+      <div class="card-head"><i class="ti ti-tool card-icon" style="color:var(--purple)" aria-hidden="true"></i><span class="card-name">잘하는 것</span></div>
+      <div class="card-hint">남들이 나에게 자주 물어보는 것은? 특히 뛰어난 역량은?</div>
+      <textarea id="f_skill" placeholder="강점, 전문성, 반복되는 칭찬..."></textarea>
+    </div>
+    <div class="card card-top-purple">
+      <div class="card-head"><i class="ti ti-trophy card-icon" style="color:var(--purple)" aria-hidden="true"></i><span class="card-name">현재 경쟁 우위</span></div>
+      <div class="card-hint">지금 나만이 가진 차별점은? 쉽게 복제할 수 없는 강점은?</div>
+      <textarea id="f_edge" placeholder="나만의 독특한 조합, 경험, 관점..."></textarea>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <span class="section-tag tag-teal">5년 후의 나 — 커리어 비전</span>
+  </div>
+  <div class="g2">
+    <div class="card card-top-blue">
+      <div class="card-head"><i class="ti ti-medal card-icon" style="color:var(--blue)" aria-hidden="true"></i><span class="card-name">전문성 & 스킬</span></div>
+      <div class="badge badge-blue"><i class="ti ti-star" style="font-size:10px" aria-hidden="true"></i> 1순위</div>
+      <div class="card-hint">어떤 분야의 전문가가 되어 있는가? 어떤 새로운 스킬을 갖고 있는가?</div>
+      <textarea id="f_expertise" placeholder="보유 기술, 자격증, 전문 분야, 인정받는 역량..."></textarea>
+    </div>
+    <div class="card card-top-teal">
+      <div class="card-head"><i class="ti ti-coin card-icon" style="color:var(--teal)" aria-hidden="true"></i><span class="card-name">수입 & 자산</span></div>
+      <div class="badge badge-teal"><i class="ti ti-star" style="font-size:10px" aria-hidden="true"></i> 2순위</div>
+      <div class="card-hint">목표 연봉은? 자산 규모는? 재정적으로 어떤 자유를 누리고 있는가?</div>
+      <textarea id="f_income" placeholder="목표 연봉, 자산, 수익 구조..."></textarea>
+    </div>
+  </div>
+  <div class="g4">
+    <div class="card card-top-coral">
+      <div class="card-head"><i class="ti ti-network card-icon" style="color:var(--coral)" aria-hidden="true"></i><span class="card-name">영향력 & 네트워크</span></div>
+      <div class="card-hint">어떤 사람들과 일하고 있는가? 업계에서 어떻게 알려져 있는가?</div>
+      <textarea id="f_network" placeholder="업계 평판, 커뮤니티, 협업..."></textarea>
+    </div>
+    <div class="card card-top-amber">
+      <div class="card-head"><i class="ti ti-id-badge card-icon" style="color:var(--amber)" aria-hidden="true"></i><span class="card-name">포지션 & 직함</span></div>
+      <div class="card-hint">어떤 역할과 직함을 갖고 있는가? 조직 내 위치는?</div>
+      <textarea id="f_position" placeholder="직함, 팀 규모, 리더십 범위..."></textarea>
+    </div>
+    <div class="card card-top-pink">
+      <div class="card-head"><i class="ti ti-beach card-icon" style="color:var(--pink)" aria-hidden="true"></i><span class="card-name">일과 삶의 균형</span></div>
+      <div class="card-hint">어떤 근무 환경에서 일하는가? 커리어와 삶은 어떻게 공존하는가?</div>
+      <textarea id="f_balance" placeholder="근무 형태, 휴가, 에너지 관리..."></textarea>
+    </div>
+    <div class="card card-top-gray">
+      <div class="card-head"><i class="ti ti-flame card-icon" style="color:var(--gray)" aria-hidden="true"></i><span class="card-name">핵심 가치관 (Why)</span></div>
+      <div class="card-hint">왜 이 커리어를 원하는가? 일을 통해 무엇을 이루고 싶은가?</div>
+      <textarea id="f_why" placeholder="나의 미션, 일하는 이유..."></textarea>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <span class="section-tag tag-teal">실행 계획 — 어떻게 거기까지 갈 것인가</span>
+  </div>
+  <div class="g3k">
+    <div class="card card-top-teal">
+      <div class="card-head"><i class="ti ti-calendar card-icon" style="color:var(--teal)" aria-hidden="true"></i><span class="card-name">1년 안에 할 것</span></div>
+      <div class="card-hint">5년 목표를 향한 첫 번째 스텝은? 올해 반드시 해야 할 것은?</div>
+      <textarea id="f_y1" placeholder="단기 목표, 당장 시작할 행동..."></textarea>
+    </div>
+    <div class="card card-top-teal">
+      <div class="card-head"><i class="ti ti-clock card-icon" style="color:var(--teal)" aria-hidden="true"></i><span class="card-name">3년 안에 할 것</span></div>
+      <div class="card-hint">중간 지점에서 어떤 모습이어야 하는가? 중기 마일스톤은?</div>
+      <textarea id="f_y3" placeholder="중기 목표, 전환점, 이정표..."></textarea>
+    </div>
+    <div class="card card-top-teal">
+      <div class="card-head"><i class="ti ti-flag card-icon" style="color:var(--teal)" aria-hidden="true"></i><span class="card-name">5년 후 달성 기준</span></div>
+      <div class="card-hint">무엇을 이뤄야 성공했다고 할 수 있는가? 측정 가능한 기준은?</div>
+      <textarea id="f_y5" placeholder="측정 가능한 성공 지표, KPI..."></textarea>
+    </div>
+  </div>
+
+  <div class="actions">
+    <span class="save-ok" id="save-ok"><i class="ti ti-check"></i> 저장됨</span>
+    <span class="storage-note">작성 내용은 이 브라우저에 저장돼요. 보관은 <b>인쇄(PDF)</b>를 이용하세요.</span>
+    <button class="btn" onclick="clearAll()"><i class="ti ti-trash"></i> 초기화</button>
+    <button class="btn" onclick="printVisionBoard()"><i class="ti ti-printer"></i> 인쇄 (PDF)</button>
+    <button class="btn" onclick="downloadVisionBoardHtml()"><i class="ti ti-download"></i> 파일 저장</button>
+    <button class="btn btn-primary" onclick="saveAll()"><i class="ti ti-device-floppy"></i> 저장</button>
+  </div>
+
+</div>
+
+<script>
+const FIELDS = ['f_id','f_like','f_skill','f_edge','f_expertise','f_income','f_network','f_position','f_balance','f_why','f_y1','f_y3','f_y5'];
+const COUNTED = FIELDS.filter(f => f !== 'f_id');
+const KEY = 'vb_career_v1';
+
+function updateProg() {
+  const n = COUNTED.filter(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim().length > 0;
+  }).length;
+  document.getElementById('pf').style.width = Math.round(n / COUNTED.length * 100) + '%';
+  document.getElementById('pl').textContent = n + ' / ' + COUNTED.length + ' 작성';
+}
+
+function saveAll() {
+  const d = {};
+  FIELDS.forEach(id => { const el = document.getElementById(id); if (el) d[id] = el.value; });
+  try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e) {}
+  const ok = document.getElementById('save-ok');
+  ok.style.display = 'flex';
+  setTimeout(() => { ok.style.display = 'none'; }, 2000);
+}
+
+function printVisionBoard() {
+  saveAll();
+  const html = buildVisionBoardPrintHtml();
+  const popup = window.open('', '_blank');
+  if (!popup) {
+    alert('인쇄용 창이 차단됐어요. 브라우저에서 팝업을 허용한 뒤 다시 눌러주세요.');
+    window.print();
+    return;
+  }
+  popup.document.open();
+  popup.document.write(html);
+  popup.document.close();
+  popup.focus();
+  popup.print();
+}
+
+function buildVisionBoardPrintHtml() {
+  const sourcePage = document.querySelector('.page');
+  const page = sourcePage.cloneNode(true);
+  const sourceFields = sourcePage.querySelectorAll('input, textarea');
+  const clonedFields = page.querySelectorAll('input, textarea');
+  sourceFields.forEach((source, index) => {
+    const target = clonedFields[index];
+    if (!target) return;
+    if (target.tagName === 'TEXTAREA') {
+      const value = source.value.trim() || source.placeholder || '';
+      const printed = document.createElement('div');
+      printed.className = 'print-field' + (source.value.trim() ? '' : ' empty');
+      printed.textContent = value;
+      target.replaceWith(printed);
+      return;
+    }
+    target.setAttribute('value', source.value);
+  });
+  page.querySelectorAll('.actions').forEach(el => el.remove());
+
+  const styles = [...document.querySelectorAll('link[rel="stylesheet"], style')]
+    .map(el => el.outerHTML)
+    .join('\n');
+  const title = document.title || 'Vision Board';
+  return `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<title>${escapeHtml(title)}</title>
+${styles}
+<style>
+  @page { size: A4; margin: 10mm; }
+  body { background: #fff !important; padding: 0 !important; }
+  .page { max-width: 900px; padding: 0 !important; }
+  .print-field {
+    min-height: 80px;
+    white-space: pre-wrap;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-primary, #1a1a1a);
+  }
+  .print-field.empty { color: #bbb; }
+  input { border: none !important; border-bottom: 2px solid var(--purple, #7F77DD) !important; }
+  .print-actions { margin: 0 auto 14px; max-width: 900px; }
+  .print-actions button { padding: 8px 14px; border: 1px solid #bbb; border-radius: 6px; background: #fff; cursor: pointer; }
+  @media print { .print-actions { display: none; } }
+</style>
+</head>
+<body><div class="print-actions"><button onclick="window.print()">인쇄하기</button></div>${page.outerHTML}</body>
+</html>`;
+}
+
+function downloadVisionBoardHtml() {
+  saveAll();
+  const html = buildVisionBoardPrintHtml();
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const link = document.createElement('a');
+  link.download = 'vision-board.html';
+  link.href = URL.createObjectURL(blob);
+  document.body.appendChild(link);
+  link.click();
+  URL.revokeObjectURL(link.href);
+  link.remove();
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[ch]));
+}
+
+function loadAll() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    FIELDS.forEach(id => { const el = document.getElementById(id); if (el && d[id]) el.value = d[id]; });
+    updateProg();
+  } catch(e) {}
+}
+
+function clearAll() {
+  if (!confirm('모든 내용을 초기화할까요?')) return;
+  FIELDS.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  try { localStorage.removeItem(KEY); } catch(e) {}
+  updateProg();
+}
+
+FIELDS.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', () => { updateProg(); });
+});
+
+loadAll();
+</script>
+</body>
+</html>
