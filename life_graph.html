@@ -912,6 +912,11 @@ function rebuildAxis() {
 
 function printLifeGraph() {
   draw();
+  window.print();
+}
+
+function printLifeGraphWindow() {
+  draw();
   const title = document.querySelector('.header-left h1')?.textContent || 'Life Graph';
   const image = canvas.toDataURL('image/png');
   const popup = window.open('', '_blank');
