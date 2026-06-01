@@ -1,8 +1,8 @@
 # 사관학교 1주차 과제 사이트 안내서
 
-- 사이트:
+- 사이트 바로가기:
 <a href="https://mfw-school-pages.vercel.app" target="_blank">
-  [https://mfw-school-pages.vercel.app](https://mfw-school-pages.vercel.app)
+  https://mfw-school-pages.vercel.app
 </a>
 
 <img src="./assets/main-screen.png" alt="사이트 메인" width="320">
