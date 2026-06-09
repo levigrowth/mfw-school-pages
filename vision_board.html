@@ -196,10 +196,10 @@
   .tag-teal { background: var(--teal-light); color: var(--teal-dark); }
 
   /* Grid */
-  .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
-  .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; }
-  .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
-  .g3k { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
+  .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; align-items: start; }
+  .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px; align-items: start; }
+  .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; align-items: start; }
+  .g3k { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; align-items: start; }
 
   @media (max-width: 700px) {
     .g3, .g4, .g3k { grid-template-columns: repeat(2, 1fr); }
@@ -253,7 +253,8 @@
   .badge-teal { background: var(--teal-light); color: var(--teal-dark); }
 
   textarea {
-    flex: 1;
+    flex: 0 0 auto;
+    width: 100%;
     background: transparent;
     border: none;
     resize: none;
@@ -263,8 +264,21 @@
     outline: none;
     line-height: 1.7;
     min-height: 80px;
+    overflow: hidden;
   }
   textarea::placeholder { color: #c0bdb5; font-size: 12px; }
+
+  .print-field {
+    display: none;
+    min-height: 0;
+    white-space: pre-wrap;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-primary);
+  }
+  .print-field.empty { color: #bbb; }
 
   /* Actions */
   .actions {
@@ -342,6 +356,12 @@
   /* 인쇄용 설정 */
   @media print {
     body { background: white; padding: 1rem; }
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
     .actions, .prog-wrap, .page-nav, .top-btn { display: none !important; }
     .card:focus-within { box-shadow: none; }
     .section-head {
@@ -353,13 +373,26 @@
     .g2,
     .g4,
     .g3k {
-      break-inside: avoid;
-      page-break-inside: avoid;
+      align-items: start;
+      break-inside: auto;
+      page-break-inside: auto;
     }
     .card {
-      break-inside: avoid;
-      page-break-inside: avoid;
-      overflow: hidden;
+      break-inside: auto;
+      page-break-inside: auto;
+      overflow: visible;
+      height: auto;
+      align-self: start;
+    }
+    .card-head,
+    .badge,
+    .card-hint {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+    .print-field {
+      break-inside: auto;
+      page-break-inside: auto;
     }
     .hero { margin-bottom: 1.7rem; padding-top: 0.35rem; }
     .hero-title { font-size: 30px; margin-bottom: 0.8rem; }
@@ -381,8 +414,10 @@
       word-break: keep-all;
     }
     textarea {
-      min-height: auto;
-      overflow: hidden !important;
+      display: none !important;
+    }
+    .print-field {
+      display: block !important;
     }
   }
 
@@ -546,13 +581,24 @@ function saveAll() {
   setTimeout(() => { ok.style.display = 'none'; }, 2000);
 }
 
+function fitTextarea(el) {
+  if (!el || el.tagName !== 'TEXTAREA') return;
+  el.style.height = 'auto';
+  el.style.height = Math.max(80, el.scrollHeight + 2) + 'px';
+}
+
+function fitAllTextareas() {
+  document.querySelectorAll('textarea').forEach(fitTextarea);
+}
+
+function prepareVisionBoardPrint() {
+  syncPrintFields();
+  fitAllTextareas();
+}
+
 function printVisionBoard() {
   saveAll();
-  syncPrintFields();
-  document.querySelectorAll('textarea').forEach(el => {
-    el.style.height = 'auto';
-    el.style.height = (el.scrollHeight + 24) + 'px';
-  });
+  prepareVisionBoardPrint();
   window.print();
 }
 
@@ -576,6 +622,7 @@ function buildVisionBoardPrintHtml() {
   syncPrintFields();
   const sourcePage = document.querySelector('.page');
   const page = sourcePage.cloneNode(true);
+  page.querySelectorAll('.print-field').forEach(el => el.remove());
   const sourceFields = sourcePage.querySelectorAll('input, textarea');
   const clonedFields = page.querySelectorAll('input, textarea');
   sourceFields.forEach((source, index) => {
@@ -601,13 +648,14 @@ function buildVisionBoardPrintHtml() {
 <html lang="ko">
 <head>
 <meta charset="UTF-8"/>
-<title>${escapeHtml(title)}</title>
+<title>${escapeHtml(title)}<\/title>
 ${styles}
 <style>
   @page { size: A4; margin: 10mm; }
   body { background: #fff !important; padding: 0 !important; }
   .page { max-width: 900px; padding: 0 !important; }
   .print-field {
+    display: block;
     min-height: 80px;
     white-space: pre-wrap;
     word-break: keep-all;
@@ -621,10 +669,10 @@ ${styles}
   .print-actions { margin: 0 auto 14px; max-width: 900px; }
   .print-actions button { padding: 8px 14px; border: 1px solid #bbb; border-radius: 6px; background: #fff; cursor: pointer; }
   @media print { .print-actions { display: none; } }
-</style>
-</head>
-<body><div class="print-actions"><button onclick="window.print()">PDF로 저장</button></div>${page.outerHTML}</body>
-</html>`;
+<\/style>
+<\/head>
+<body><div class="print-actions"><button onclick="window.print()">PDF로 저장<\/button><\/div>${page.outerHTML}<\/body>
+<\/html>`;
 }
 
 function downloadVisionBoardHtml() {
@@ -657,6 +705,19 @@ function syncPrintFields() {
   if (identity && identityPrint) {
     identityPrint.textContent = identity.value.trim() || identity.placeholder || '';
   }
+  document.querySelectorAll('textarea').forEach(el => {
+    const id = el.id ? el.id + '_print' : '';
+    let printed = id ? document.getElementById(id) : null;
+    if (!printed) {
+      printed = document.createElement('div');
+      printed.className = 'print-field';
+      if (id) printed.id = id;
+      el.insertAdjacentElement('afterend', printed);
+    }
+    const hasValue = el.value.trim().length > 0;
+    printed.className = 'print-field' + (hasValue ? '' : ' empty');
+    printed.textContent = hasValue ? el.value.trim() : (el.placeholder || '');
+  });
 }
 
 function loadAll() {
@@ -667,6 +728,7 @@ function loadAll() {
     FIELDS.forEach(id => { const el = document.getElementById(id); if (el && d[id]) el.value = d[id]; });
     updateProg();
     syncPrintFields();
+    fitAllTextareas();
   } catch(e) {}
 }
 
@@ -675,15 +737,21 @@ function clearAll() {
   FIELDS.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   try { localStorage.removeItem(KEY); } catch(e) {}
   updateProg();
+  syncPrintFields();
+  fitAllTextareas();
 }
 
 FIELDS.forEach(id => {
   const el = document.getElementById(id);
-  if (el) el.addEventListener('input', () => { updateProg(); syncPrintFields(); });
+  if (el) el.addEventListener('input', () => { fitTextarea(el); updateProg(); syncPrintFields(); });
 });
 
 loadAll();
 syncPrintFields();
+fitAllTextareas();
+window.addEventListener('beforeprint', prepareVisionBoardPrint);
+window.addEventListener('resize', fitAllTextareas);
+if (document.fonts) document.fonts.ready.then(fitAllTextareas);
 </script>
 </body>
 </html>
