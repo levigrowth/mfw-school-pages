@@ -8,32 +8,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,300&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --ink: #1c1917;
-  --ink2: #57534e;
-  --ink3: #a8a29e;
-  --ink4: #d6d3d1;
-  --paper: #fafaf9;
-  --paper2: #f5f5f4;
-  --paper3: #e7e5e4;
-  --signal: #dc4f00;
+  --ink:     #1c1917;
+  --ink2:    #57534e;
+  --ink3:    #a8a29e;
+  --ink4:    #d6d3d1;
+  --paper:   #fafaf9;
+  --paper2:  #f5f5f4;
+  --paper3:  #e7e5e4;
+  --signal:  #dc4f00;
   --signal2: #ff6b2b;
-  --up: #16a34a;
-  --down: #dc4f00;
-  --accent: #2563eb;
-  --r: 10px;
-  --bg: var(--paper);
-  --bg2: #fff;
-  --bg3: var(--paper2);
-  --border: var(--paper3);
-  --border2: var(--paper3);
-  --text: var(--ink);
-  --text2: var(--ink2);
-  --text3: var(--ink3);
-  --positive: var(--up);
-  --negative: var(--down);
+  --up:      #16a34a;
+  --down:    #dc4f00;
+  --accent:  #2563eb;
+  --r:       10px;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { width: 100%; height: 100%; overflow-x: hidden; }
+html, body { height: 100%; }
 body {
   font-family: 'Noto Sans KR', sans-serif;
   background: var(--paper);
@@ -41,9 +31,10 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  overflow-y: auto;
 }
-.header, .hdr {
+
+/* ─── Header ─── */
+.hdr {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -52,7 +43,7 @@ body {
   border-bottom: 1px solid var(--paper3);
   background: #fff;
 }
-.header-left, .hdr-left { display: flex; flex-direction: column; gap: 2px; }
+.hdr-left { display: flex; flex-direction: column; gap: 2px; }
 .hdr-eyebrow {
   font-size: 10px;
   font-weight: 700;
@@ -60,7 +51,7 @@ body {
   text-transform: uppercase;
   color: var(--signal);
 }
-.header-left h1, .hdr-title {
+.hdr-title {
   font-family: 'Fraunces', serif;
   font-size: 20px;
   font-weight: 300;
@@ -68,9 +59,11 @@ body {
   color: var(--ink);
   line-height: 1.2;
 }
-.header-left p, .hdr-sub { font-size: 11px; color: var(--ink3); margin-top: 1px; }
-.header-right, .hdr-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-.toolbar, .tbar {
+.hdr-sub { font-size: 11px; color: var(--ink3); margin-top: 1px; }
+.hdr-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+/* ─── Toolbar ─── */
+.tbar {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -79,9 +72,9 @@ body {
   background: var(--paper2);
   flex-wrap: wrap;
 }
-.toolbar-group, .tbar-group { display: flex; align-items: center; gap: 6px; }
-.toolbar-label, .tbar-label { font-size: 11px; color: var(--ink3); white-space: nowrap; }
-.toolbar-input, .tbar-input {
+.tbar-group { display: flex; align-items: center; gap: 6px; }
+.tbar-label { font-size: 11px; color: var(--ink3); white-space: nowrap; }
+.tbar-input {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 12px;
   background: #fff;
@@ -93,9 +86,9 @@ body {
   outline: none;
   transition: border-color 0.15s;
 }
-.toolbar-input:focus, .tbar-input:focus { border-color: var(--signal); }
-.toolbar-sep, .sep { width: 1px; height: 18px; background: var(--paper3); }
-.toggle-btn, .tog {
+.tbar-input:focus { border-color: var(--signal); }
+.sep { width: 1px; height: 18px; background: var(--paper3); }
+.tog {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 11px;
   font-weight: 500;
@@ -107,8 +100,10 @@ body {
   cursor: pointer;
   transition: all 0.12s;
 }
-.toggle-btn.active, .tog.on, .tog.active { background: var(--ink); color: #fff; border-color: var(--ink); }
-.toggle-btn:hover:not(.active), .tog:hover:not(.on):not(.active) { color: var(--ink); border-color: var(--ink3); }
+.tog.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.tog:hover:not(.on) { color: var(--ink); border-color: var(--ink3); }
+
+/* ─── Main ─── */
 .main {
   flex: 1;
   display: flex;
@@ -126,19 +121,21 @@ canvas {
   border-radius: var(--r);
   border: 1px solid var(--paper3);
 }
-canvas.dragging, canvas.drag { cursor: grabbing; }
-canvas.hovering, canvas.hov { cursor: grab; }
-.hint-bar, .legend {
+canvas.drag { cursor: grabbing; }
+canvas.hov  { cursor: grab; }
+
+/* ─── Legend ─── */
+.legend {
   display: flex;
   gap: 1.25rem;
   flex-wrap: wrap;
   padding: 0 2px;
 }
-.hint-item, .leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ink3); }
-.hint-dot, .leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.storage-note { color: var(--ink3); font-size: 11px; line-height: 1.5; }
-.storage-note b { color: var(--ink2); font-weight: 500; }
-.point-popup, .popup {
+.leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--ink3); }
+.leg-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ─── Popup ─── */
+.popup {
   position: fixed;
   background: #fff;
   border: 1px solid var(--paper3);
@@ -150,8 +147,8 @@ canvas.hovering, canvas.hov { cursor: grab; }
   display: none;
   overflow: hidden;
 }
-.point-popup.visible, .popup.vis { display: block; }
-.popup-header, .popup-hdr {
+.popup.vis { display: block; }
+.popup-hdr {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -166,7 +163,7 @@ canvas.hovering, canvas.hov { cursor: grab; }
   text-transform: uppercase;
   color: var(--ink2);
 }
-.popup-close, .popup-x {
+.popup-x {
   background: none;
   border: none;
   cursor: pointer;
@@ -177,12 +174,10 @@ canvas.hovering, canvas.hov { cursor: grab; }
   border-radius: 5px;
   transition: background 0.12s, color 0.12s;
 }
-.popup-close:hover, .popup-x:hover { background: var(--paper3); color: var(--ink); }
+.popup-x:hover { background: var(--paper3); color: var(--ink); }
 .popup-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 9px; }
-.popup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.popup-row { margin-bottom: 0; }
-.popup-row label { font-size: 11px; color: var(--ink3); display: block; margin-bottom: 3px; }
-.popup-row input, .popup-row textarea {
+.p-row label { font-size: 11px; color: var(--ink3); display: block; margin-bottom: 3px; }
+.p-row input, .p-row textarea, .p-row select {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 12px;
   background: var(--paper2);
@@ -195,9 +190,10 @@ canvas.hovering, canvas.hov { cursor: grab; }
   transition: border-color 0.15s;
   resize: none;
 }
-.popup-row input:focus, .popup-row textarea:focus { border-color: var(--signal); background: #fff; }
-.popup-actions, .popup-foot { display: flex; gap: 7px; margin-top: 0; }
-.popup-btn, .p-btn {
+.p-row input:focus, .p-row textarea:focus, .p-row select:focus { border-color: var(--signal); background: #fff; }
+.p-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.popup-foot { display: flex; gap: 7px; }
+.p-btn {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 12px;
   font-weight: 500;
@@ -208,9 +204,11 @@ canvas.hovering, canvas.hov { cursor: grab; }
   transition: opacity 0.12s;
   flex: 1;
 }
-.popup-btn:hover, .p-btn:hover { opacity: 0.82; }
-.popup-save, .p-save { background: var(--signal); color: #fff; }
-.popup-delete, .p-delete { background: var(--paper2); color: var(--ink2); border: 1px solid var(--paper3); }
+.p-btn:hover { opacity: 0.82; }
+.p-save   { background: var(--signal); color: #fff; }
+.p-delete { background: var(--paper2); color: var(--ink2); border: 1px solid var(--paper3); }
+
+/* ─── Buttons ─── */
 .btn {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 12px;
@@ -229,599 +227,383 @@ canvas.hovering, canvas.hov { cursor: grab; }
   transition: all 0.12s;
 }
 .btn:hover { background: var(--paper2); color: var(--ink); }
-.btn-accent, .btn-primary { background: var(--signal); color: #fff; border-color: var(--signal); }
-.btn-accent:hover, .btn-primary:hover { background: #b83d00; border-color: #b83d00; }
+.btn-primary { background: var(--signal); color: #fff; border-color: var(--signal); }
+.btn-primary:hover { background: #b83d00; border-color: #b83d00; }
 .save-ok { font-size: 12px; color: var(--up); display: none; align-items: center; gap: 4px; }
-.top-btn {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 50;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--ink2);
-  background: rgba(255,255,255,0.92);
-  border: 1px solid var(--paper3);
-  border-radius: 8px;
-  padding: 10px 14px;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-.top-btn:hover { background: var(--paper2); color: var(--ink); }
-.print-page { display: none; }
+
 @media (max-width: 600px) {
-  .header, .hdr, .toolbar, .tbar, .main { padding-left: 1rem; padding-right: 1rem; }
-  .header, .hdr { grid-template-columns: 1fr; }
-  .header-right, .hdr-actions { flex-wrap: wrap; }
-}
-@media print {
-  @page { size: landscape; margin: 10mm; }
-  .header-right, .toolbar, .hint-bar, .top-btn { display: none !important; }
-  body { background: white; }
-  .header { padding: 1rem 0; border-bottom: none; }
-  .main { padding: 0; }
-  canvas { box-shadow: none; border: 1px solid #ccc; }
-  body.printing-life { padding: 0 !important; display: block; min-height: auto; }
-  body.printing-life > :not(.print-page) { display: none !important; }
-  body.printing-life .print-page { display: block !important; width: 100%; }
-  .print-page h1 { margin: 0 0 4px; font-family: 'Fraunces', serif; font-size: 20px; font-style: italic; font-weight: 300; }
-  .print-page p { margin: 0 0 8px; color: #777; font-size: 11px; }
-  .print-page img { display: block; width: 100%; max-height: 165mm; object-fit: contain; border: 1px solid #ddd; border-radius: 8px; }
+  .hdr, .tbar, .main { padding-left: 1rem; padding-right: 1rem; }
+  .hdr { grid-template-columns: 1fr; }
+  .hdr-actions { flex-wrap: wrap; }
 }
 </style>
 </head>
 <body>
-<header class="header hdr">
-  <div class="header-left hdr-left">
+
+<header class="hdr">
+  <div class="hdr-left">
     <div class="hdr-eyebrow">Career Life Graph</div>
-    <h1 class="hdr-title">커리어 인생 그래프</h1>
-    <p class="hdr-sub">마케터 · 창업가 · 커리어 체인저를 위한 성장 몰입 곡선 — Y축은 “나다운 일을 하고 있는가”의 정도</p>
+    <div class="hdr-title">커리어 인생 그래프</div>
+    <div class="hdr-sub">마케터 · 창업가 · 커리어 체인저를 위한 성장 몰입 곡선 — Y축은 "나다운 일을 하고 있는가"의 정도</div>
   </div>
-  <div class="header-right hdr-actions">
+  <div class="hdr-actions">
     <span class="save-ok" id="save-ok">✓ 저장됨</span>
-    <a class="btn" href="./index.html">홈가기</a>
-    <button class="btn" onclick="clearAll()">초기화</button>
-    <button class="btn" onclick="printLifeGraph()">인쇄 (PDF)</button>
-    <button class="btn" onclick="downloadLifeGraphImage()">이미지 저장</button>
-    <button class="btn btn-accent" onclick="saveData()">저장</button>
+    <a class="btn" href="./index.html">홈으로</a>
+    <button class="btn" onclick="clearAll()">↺ 초기화</button>
+    <button class="btn" onclick="window.print()">⎙ 인쇄</button>
+    <button class="btn btn-primary" onclick="saveData()">저장</button>
   </div>
 </header>
 
-<div class="toolbar tbar">
-  <div class="toolbar-group tbar-group">
-    <span class="toolbar-label tbar-label">시작 나이</span>
-    <input class="toolbar-input tbar-input" id="age-start" type="number" value="5" min="0" max="50" onchange="rebuildAxis()"/>
+<div class="tbar">
+  <div class="tbar-group">
+    <span class="tbar-label">시작 나이</span>
+    <input class="tbar-input" id="age-start" type="number" value="5" min="0" max="50" onchange="rebuildAxis()"/>
   </div>
-  <div class="toolbar-group tbar-group">
-    <span class="toolbar-label tbar-label">현재 나이</span>
-    <input class="toolbar-input tbar-input" id="age-end" type="number" value="35" min="10" max="100" onchange="rebuildAxis()"/>
+  <div class="tbar-group">
+    <span class="tbar-label">현재 나이</span>
+    <input class="tbar-input" id="age-end" type="number" value="35" min="10" max="100" onchange="rebuildAxis()"/>
   </div>
-  <div class="toolbar-sep sep"></div>
-  <div class="toolbar-group tbar-group">
-    <span class="toolbar-label tbar-label">스타일</span>
-    <button class="toggle-btn tog active" id="btn-curve" onclick="setStyle('curve')">곡선</button>
-    <button class="toggle-btn tog" id="btn-line" onclick="setStyle('line')">꺾은선</button>
+  <div class="sep"></div>
+  <div class="tbar-group">
+    <span class="tbar-label">스타일</span>
+    <button class="tog on" id="btn-curve" onclick="setStyle('curve')">곡선</button>
+    <button class="tog" id="btn-line"  onclick="setStyle('line')">꺾은선</button>
   </div>
-  <div class="toolbar-sep sep"></div>
-  <div class="toolbar-group tbar-group">
-    <span class="toolbar-label tbar-label">피드백</span>
-    <button class="toggle-btn tog active" id="btn-labels" onclick="toggleLabels()">표시</button>
+  <div class="sep"></div>
+  <div class="tbar-group">
+    <span class="tbar-label">에피소드</span>
+    <button class="tog on" id="btn-labels" onclick="toggleLabels()">표시</button>
   </div>
 </div>
 
 <main class="main">
-  <div class="canvas-wrap" id="canvas-wrap">
-    <canvas id="graph" aria-label="성장 몰입 곡선 인터랙티브 캔버스"></canvas>
+  <div class="canvas-wrap" id="cwrap">
+    <canvas id="gc" aria-label="성장 몰입 곡선 인터랙티브 캔버스"></canvas>
   </div>
-  <div class="hint-bar legend">
-    <div class="hint-item leg-item"><div class="hint-dot leg-dot" style="background:var(--up)"></div>포인트를 드래그해 몰입도 조정</div>
-    <div class="hint-item leg-item"><div class="hint-dot leg-dot" style="background:var(--accent)"></div>포인트 클릭 후 피드백 기록</div>
-    <div class="hint-item leg-item"><div class="hint-dot leg-dot" style="background:var(--signal)"></div>빈 곳 클릭 후 포인트 추가</div>
-    <div class="hint-item leg-item"><div class="hint-dot leg-dot" style="background:var(--ink3)"></div>팝업의 삭제 버튼으로 포인트 제거</div>
-    <div class="hint-item storage-note">작성 내용은 이 브라우저에 저장됩니다. 보관은 <b>인쇄(PDF)</b>를 이용하세요.</div>
+  <div class="legend">
+    <div class="leg-item"><div class="leg-dot" style="background:var(--up)"></div>포인트 드래그 → 몰입도 조정</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--accent)"></div>포인트 클릭 → 에피소드 기록</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--signal)"></div>빈 곳 클릭 → 포인트 추가</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--ink3)"></div>팝업 ✕ · 메모 없이 닫기 → 포인트 제거</div>
   </div>
 </main>
 
-<div class="point-popup popup" id="point-popup">
-  <div class="popup-header popup-hdr">
-    <div class="popup-title">피드백</div>
-    <button class="popup-close popup-x" onclick="cancelPopup()" aria-label="닫기">×</button>
+<!-- Popup -->
+<div class="popup" id="popup">
+  <div class="popup-hdr">
+    <span class="popup-title">에피소드</span>
+    <button class="popup-x" onclick="cancelPopup()" aria-label="닫기">✕</button>
   </div>
   <div class="popup-body">
-    <div class="popup-grid">
-      <div class="popup-row">
+    <div class="p-row-2">
+      <div class="p-row">
         <label>나이</label>
-        <input type="number" id="popup-age" min="0" max="100"/>
+        <input type="number" id="p-age" min="0" max="100"/>
       </div>
-      <div class="popup-row">
+      <div class="p-row">
         <label>몰입도 <span style="font-size:10px;color:var(--ink3)">-100~+100</span></label>
-        <input type="number" id="popup-score" min="-100" max="100"/>
+        <input type="number" id="p-score" min="-100" max="100"/>
       </div>
     </div>
-    <div class="popup-row">
+    <div class="p-row">
       <label>어떤 일이 있었나요?</label>
-      <textarea id="popup-memo" rows="3" placeholder="기억나는 사건, 전환점, 배운 것..."></textarea>
+      <textarea id="p-memo" rows="3" placeholder="캠페인, 이직, 창업, 실패, 깨달음..."></textarea>
     </div>
-    <div class="popup-actions popup-foot">
-      <button class="popup-btn popup-delete p-btn p-delete" onclick="deletePoint()">삭제</button>
-      <button class="popup-btn popup-save p-btn p-save" onclick="savePoint()">저장</button>
+    <div class="p-row">
+      <label>이 시기 나는</label>
+      <select id="p-type">
+        <option value="">— 선택 안 함 —</option>
+        <option value="breakthrough">🚀 돌파구를 찾은 순간</option>
+        <option value="turning">🌀 큰 분기점이 된 순간</option>
+        <option value="learning">📖 뼈아프게 배운 순간</option>
+        <option value="pivot">🔀 방향을 바꾼 순간</option>
+        <option value="peak">⚡ 완전히 몰입했던 순간</option>
+        <option value="lost">🧭 길을 잃었던 순간</option>
+        <option value="start">🌱 새로운 시작</option>
+      </select>
+    </div>
+    <div class="popup-foot">
+      <button class="p-btn p-delete" onclick="deletePoint()">삭제</button>
+      <button class="p-btn p-save"   onclick="savePoint()">저장</button>
     </div>
   </div>
-</div>
-
-<button class="top-btn" type="button" onclick="scrollToTop()">맨 위로</button>
-
-<div class="print-page" id="print-page" aria-hidden="true">
-  <h1 id="print-title">커리어 인생 그래프</h1>
-  <p id="print-subtitle"></p>
-  <img id="print-image" alt="인생그래프"/>
 </div>
 
 <script>
-const canvas = document.getElementById('graph');
-const ctx = canvas.getContext('2d');
-const wrap = document.getElementById('canvas-wrap');
-const popup = document.getElementById('point-popup');
+const canvas = document.getElementById('gc');
+const ctx    = canvas.getContext('2d');
+const wrap   = document.getElementById('cwrap');
+const popup  = document.getElementById('popup');
+const dpr    = window.devicePixelRatio || 1;
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+const TYPE_ICONS = {
+  breakthrough: '🚀', turning: '🌀', learning: '📖', pivot: '🔀',
+  peak: '⚡', lost: '🧭', start: '🌱'
+};
 
 let points = [
-  { age: 8,  score: -60, memo: '예시: 힘들었던 시기' },
-  { age: 15, score: 30,  memo: '예시: 좋은 친구들을 만남' },
-  { age: 20, score: 70,  memo: '예시: 대학 입학, 새로운 시작' },
-  { age: 25, score: -20, memo: '예시: 취업 실패, 방황' },
-  { age: 30, score: 60,  memo: '예시: 커리어 안정, 성장' },
-  { age: 35, score: 40,  memo: '예시: 현재' },
+  { age:8,  score:-55, memo:'예시: 방황했던 시기',         type:'lost' },
+  { age:15, score:35,  memo:'예시: 처음 잘한다는 말을 들음', type:'learning' },
+  { age:20, score:65,  memo:'예시: 내가 좋아하는 일 발견',  type:'peak' },
+  { age:25, score:-25, memo:'예시: 첫 직장의 현실',         type:'lost' },
+  { age:30, score:70,  memo:'예시: 내 방식으로 성과를 냄',  type:'breakthrough' },
+  { age:35, score:45,  memo:'예시: 현재',                   type:'start' },
 ];
 
-let ageStart = 5;
-let ageEnd = 35;
-let curveStyle = 'curve';
-let showLabels = true;
-let dragging = null;
-let dragOffsetY = 0;
-let editingIdx = null;
-let isNewPoint = false;
-let hoveredIdx = null;
-let dpr = window.devicePixelRatio || 1;
+let ageStart=5, ageEnd=35, curveStyle='curve', showLabels=true;
+let dragging=null, editingIdx=null, isNewPoint=false, hoveredIdx=null;
+const PAD = { top:52, bottom:56, left:68, right:28 };
+const PR  = 15;
 
-// Layout
-const PAD = { top: 50, bottom: 55, left: 65, right: 30 };
-const POINT_R = 16;
+const C = {
+  bg:      '#ffffff',
+  grid:    '#f0eeec',
+  zero:    '#d0cdc9',
+  axis:    '#b0aba6',
+  label:   '#888480',
+  up:      '#16a34a',
+  down:    '#dc4f00',
+  line:    '#1c1917',
+  fillUp:  'rgba(22,163,74,0.08)',
+  fillDn:  'rgba(220,79,0,0.08)',
+};
 
-function getW() { return wrap.clientWidth || 600; }
-function getH() { return Math.max(200, wrap.clientHeight || 400); }
+/* ─── Coordinate helpers ─── */
+const gW = () => wrap.clientWidth  || 700;
+const gH = () => Math.max(200, wrap.clientHeight || 420);
+const aX = a => PAD.left + ((a - ageStart) / (ageEnd - ageStart)) * (gW() - PAD.left - PAD.right);
+const sY = s => { const h=gH(), mid=PAD.top+(h-PAD.top-PAD.bottom)/2; return mid - (s/100)*((h-PAD.top-PAD.bottom)/2); };
+const xA = x => ageStart + ((x-PAD.left)/(gW()-PAD.left-PAD.right))*(ageEnd-ageStart);
+const yS = y => { const h=gH(), mid=PAD.top+(h-PAD.top-PAD.bottom)/2; return Math.round(((mid-y)/((h-PAD.top-PAD.bottom)/2))*100); };
 
-function ageToX(age) {
-  const w = getW();
-  return PAD.left + ((age - ageStart) / (ageEnd - ageStart)) * (w - PAD.left - PAD.right);
-}
-function scoreToY(score) {
-  const h = getH();
-  const midY = PAD.top + (h - PAD.top - PAD.bottom) / 2;
-  return midY - (score / 100) * ((h - PAD.top - PAD.bottom) / 2);
-}
-function xToAge(x) {
-  const w = getW();
-  return ageStart + ((x - PAD.left) / (w - PAD.left - PAD.right)) * (ageEnd - ageStart);
-}
-function yToScore(y) {
-  const h = getH();
-  const midY = PAD.top + (h - PAD.top - PAD.bottom) / 2;
-  return Math.round(((midY - y) / ((h - PAD.top - PAD.bottom) / 2)) * 100);
-}
-
-function resizeCanvas() {
-  const w = getW();
-  const h = getH();
-  canvas.width = w * dpr;
-  canvas.height = h * dpr;
-  canvas.style.width = w + 'px';
-  canvas.style.height = h + 'px';
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+/* ─── Resize ─── */
+function resize() {
+  const w=gW(), h=gH();
+  canvas.width=w*dpr; canvas.height=h*dpr;
+  canvas.style.width=w+'px'; canvas.style.height=h+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
   draw();
 }
+new ResizeObserver(resize).observe(wrap);
 
+/* ─── Draw ─── */
 function draw() {
-  const w = getW();
-  const h = getH();
-  ctx.clearRect(0, 0, w, h);
+  const w=gW(), h=gH();
+  ctx.clearRect(0,0,w,h);
 
-  // Background
-  ctx.fillStyle = '#ffffff';
-  ctx.beginPath();
-  ctx.roundRect(0, 0, w, h, 10);
-  ctx.fill();
+  // bg
+  ctx.fillStyle=C.bg;
+  ctx.beginPath(); ctx.roundRect(0,0,w,h,10); ctx.fill();
 
-  const midY = PAD.top + (h - PAD.top - PAD.bottom) / 2;
+  const mid = PAD.top + (h-PAD.top-PAD.bottom)/2;
 
-  // Grid lines
-  ctx.strokeStyle = '#f0eeec';
-  ctx.lineWidth = 1;
-  const gridScores = [100, 75, 50, 25, 0, -25, -50, -75, -100];
-  gridScores.forEach(s => {
-    const y = scoreToY(s);
-    ctx.beginPath();
-    ctx.moveTo(PAD.left, y);
-    ctx.lineTo(w - PAD.right, y);
-    ctx.stroke();
+  // horizontal grids
+  ctx.strokeStyle=C.grid; ctx.lineWidth=1;
+  [100,75,50,25,0,-25,-50,-75,-100].forEach(s => {
+    const y=sY(s);
+    ctx.beginPath(); ctx.moveTo(PAD.left,y); ctx.lineTo(w-PAD.right,y); ctx.stroke();
   });
 
-  // Age grid
-  const step = Math.ceil((ageEnd - ageStart) / 12);
-  ctx.strokeStyle = '#f0eeec';
-  ctx.lineWidth = 1;
-  for (let a = Math.ceil(ageStart / step) * step; a <= ageEnd; a += step) {
-    const x = ageToX(a);
-    ctx.beginPath();
-    ctx.moveTo(x, PAD.top);
-    ctx.lineTo(x, h - PAD.bottom);
-    ctx.stroke();
+  // vertical grids
+  const step = Math.max(1, Math.ceil((ageEnd-ageStart)/12));
+  for (let a=Math.ceil(ageStart/step)*step; a<=ageEnd; a+=step) {
+    const x=aX(a);
+    ctx.beginPath(); ctx.moveTo(x,PAD.top); ctx.lineTo(x,h-PAD.bottom); ctx.stroke();
   }
 
-  // Axis labels Y
-  ctx.fillStyle = '#888480';
-  ctx.font = '11px Noto Sans KR';
-  ctx.textAlign = 'right';
-  [100, 50, 0, -50, -100].forEach(s => {
-    const y = scoreToY(s);
-    ctx.fillText(s > 0 ? '+' + s : s, PAD.left - 8, y + 4);
-  });
+  // Y labels
+  ctx.fillStyle=C.label; ctx.font='11px Noto Sans KR'; ctx.textAlign='right';
+  [100,50,0,-50,-100].forEach(s => ctx.fillText(s>0?'+'+s:s, PAD.left-9, sY(s)+4));
 
-  // Axis labels X
-  ctx.fillStyle = '#888480';
-  ctx.textAlign = 'center';
-  for (let a = Math.ceil(ageStart / step) * step; a <= ageEnd; a += step) {
-    const x = ageToX(a);
-    ctx.fillText(a, x, h - PAD.bottom + 18);
-  }
+  // X labels
+  ctx.textAlign='center';
+  for (let a=Math.ceil(ageStart/step)*step; a<=ageEnd; a+=step)
+    ctx.fillText(a, aX(a), h-PAD.bottom+17);
 
-  // Axis labels text
+  // Axis title Y
   ctx.save();
-  ctx.translate(16, midY);
-  ctx.rotate(-Math.PI / 2);
-  ctx.textAlign = 'center';
-  ctx.fillStyle = '#b0aba6';
-  ctx.font = '11px Noto Sans KR';
-  ctx.fillText('성장 몰입도', 0, 0);
+  ctx.translate(15,mid); ctx.rotate(-Math.PI/2);
+  ctx.textAlign='center'; ctx.fillStyle=C.axis; ctx.font='11px Noto Sans KR';
+  ctx.fillText('성장 몰입도',0,0);
   ctx.restore();
 
-  ctx.fillStyle = '#b0aba6';
-  ctx.font = '11px Noto Sans KR';
-  ctx.textAlign = 'center';
-  ctx.fillText('나이', w / 2, h - 6);
+  // Axis title X
+  ctx.fillStyle=C.axis; ctx.font='11px Noto Sans KR'; ctx.textAlign='center';
+  ctx.fillText('나이', w/2, h-5);
 
   // Zero axis
-  ctx.strokeStyle = '#d0cdc9';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(PAD.left, midY);
-  ctx.lineTo(w - PAD.right, midY);
-  ctx.stroke();
+  ctx.strokeStyle=C.zero; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(PAD.left,mid); ctx.lineTo(w-PAD.right,mid); ctx.stroke();
+  ctx.strokeStyle=C.zero; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(PAD.left,PAD.top-8); ctx.lineTo(PAD.left,h-PAD.bottom+8); ctx.stroke();
 
-  // Y axis
-  ctx.beginPath();
-  ctx.moveTo(PAD.left, PAD.top - 10);
-  ctx.lineTo(PAD.left, h - PAD.bottom + 10);
-  ctx.stroke();
+  const sorted = [...points].sort((a,b)=>a.age-b.age);
 
-  // Sort visible points by age. Points outside the selected age range stay saved,
-  // but are hidden from the graph until the range includes them again.
-  const sorted = points.filter(isPointVisible).sort((a, b) => a.age - b.age);
-
-  // Positive/negative fill
-  if (sorted.length >= 2) {
-    drawFill(sorted, midY, w, h);
-  }
+  // Area fill
+  if (sorted.length>=2) drawFill(sorted, mid, w, h);
 
   // Line
-  if (sorted.length >= 2) {
-    ctx.strokeStyle = '#1c1917';
-    ctx.lineWidth = 2.5;
-    ctx.lineJoin = 'round';
+  if (sorted.length>=2) {
+    ctx.strokeStyle=C.line; ctx.lineWidth=2.5; ctx.lineJoin='round';
     ctx.beginPath();
-    if (curveStyle === 'curve') {
-      drawCurve(sorted);
-    } else {
-      sorted.forEach((p, i) => {
-        const x = ageToX(p.age);
-        const y = scoreToY(p.score);
-        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      });
-    }
+    if (curveStyle==='curve') drawCurve(sorted);
+    else sorted.forEach((p,i) => { const x=aX(p.age),y=sY(p.score); i===0?ctx.moveTo(x,y):ctx.lineTo(x,y); });
     ctx.stroke();
   }
 
-  // Labels (speech bubbles)
-  if (showLabels) {
-    const placedBubbles = [];
-    sorted.forEach((p, i) => {
-      if (!p.memo) return;
-      const x = ageToX(p.age);
-      const y = scoreToY(p.score);
-      drawBubble(ctx, p.memo, x, y, p.score >= 0, placedBubbles);
-    });
-  }
+  // Labels
+  if (showLabels) sorted.forEach(p => { if (p.memo) drawBubble(p); });
 
   // Points
-  sorted.forEach((p, i) => {
-    const origIdx = points.indexOf(p);
-    const x = ageToX(p.age);
-    const y = scoreToY(p.score);
-    const isHov = origIdx === hoveredIdx;
-    const isDrag = dragging && dragging.idx === origIdx;
-
-    // Glow
-    if (isHov || isDrag) {
-      ctx.beginPath();
-      ctx.arc(x, y, POINT_R + 6, 0, Math.PI * 2);
-      const grd = ctx.createRadialGradient(x, y, 0, x, y, POINT_R + 6);
-      grd.addColorStop(0, 'rgba(232,93,58,0.3)');
-      grd.addColorStop(1, 'rgba(232,93,58,0)');
-      ctx.fillStyle = grd;
-      ctx.fill();
+  sorted.forEach(p => {
+    const oi=points.indexOf(p), x=aX(p.age), y=sY(p.score);
+    const isH=oi===hoveredIdx, isD=dragging&&dragging.idx===oi;
+    // glow
+    if (isH||isD) {
+      const g=ctx.createRadialGradient(x,y,0,x,y,PR+8);
+      g.addColorStop(0,p.score>=0?'rgba(22,163,74,0.18)':'rgba(220,79,0,0.18)');
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath(); ctx.arc(x,y,PR+8,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
     }
-
-    ctx.beginPath();
-    ctx.arc(x, y, isDrag ? POINT_R + 2 : POINT_R, 0, Math.PI * 2);
-      ctx.fillStyle = p.score >= 0 ? '#16a34a' : '#dc4f00';
-    ctx.fill();
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
-    // Age label on point
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px Noto Sans KR';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(p.age, x, y);
-    ctx.textBaseline = 'alphabetic';
-  });
-}
-
-function drawCurve(sorted) {
-  if (sorted.length < 2) return;
-  ctx.moveTo(ageToX(sorted[0].age), scoreToY(sorted[0].score));
-  for (let i = 0; i < sorted.length - 1; i++) {
-    const x0 = ageToX(sorted[i].age), y0 = scoreToY(sorted[i].score);
-    const x1 = ageToX(sorted[i+1].age), y1 = scoreToY(sorted[i+1].score);
-    const cpx = (x0 + x1) / 2;
-    ctx.bezierCurveTo(cpx, y0, cpx, y1, x1, y1);
-  }
-}
-
-function drawFill(sorted, midY, w, h) {
-  // Positive fill
-  ctx.save();
-  ctx.beginPath();
-  if (curveStyle === 'curve') {
-    ctx.moveTo(ageToX(sorted[0].age), midY);
-    ctx.lineTo(ageToX(sorted[0].age), scoreToY(sorted[0].score));
-    for (let i = 0; i < sorted.length - 1; i++) {
-      const x0 = ageToX(sorted[i].age), y0 = scoreToY(sorted[i].score);
-      const x1 = ageToX(sorted[i+1].age), y1 = scoreToY(sorted[i+1].score);
-      const cpx = (x0 + x1) / 2;
-      ctx.bezierCurveTo(cpx, y0, cpx, y1, x1, y1);
-    }
-    ctx.lineTo(ageToX(sorted[sorted.length-1].age), midY);
-  } else {
-    ctx.moveTo(ageToX(sorted[0].age), midY);
-    sorted.forEach(p => ctx.lineTo(ageToX(p.age), scoreToY(p.score)));
-    ctx.lineTo(ageToX(sorted[sorted.length-1].age), midY);
-  }
-  ctx.closePath();
-  const grad = ctx.createLinearGradient(0, PAD.top, 0, midY);
-  grad.addColorStop(0, 'rgba(78,201,138,0.18)');
-  grad.addColorStop(1, 'rgba(78,201,138,0.0)');
-  ctx.fillStyle = grad;
-  ctx.fill();
-  ctx.restore();
-
-  // Negative fill
-  ctx.save();
-  ctx.beginPath();
-  if (curveStyle === 'curve') {
-    ctx.moveTo(ageToX(sorted[0].age), midY);
-    ctx.lineTo(ageToX(sorted[0].age), scoreToY(sorted[0].score));
-    for (let i = 0; i < sorted.length - 1; i++) {
-      const x0 = ageToX(sorted[i].age), y0 = scoreToY(sorted[i].score);
-      const x1 = ageToX(sorted[i+1].age), y1 = scoreToY(sorted[i+1].score);
-      const cpx = (x0 + x1) / 2;
-      ctx.bezierCurveTo(cpx, y0, cpx, y1, x1, y1);
-    }
-    ctx.lineTo(ageToX(sorted[sorted.length-1].age), midY);
-  } else {
-    ctx.moveTo(ageToX(sorted[0].age), midY);
-    sorted.forEach(p => ctx.lineTo(ageToX(p.age), scoreToY(p.score)));
-    ctx.lineTo(ageToX(sorted[sorted.length-1].age), midY);
-  }
-  ctx.closePath();
-  const grad2 = ctx.createLinearGradient(0, midY, 0, getH() - PAD.bottom);
-  grad2.addColorStop(0, 'rgba(232,93,58,0.0)');
-  grad2.addColorStop(1, 'rgba(232,93,58,0.18)');
-  ctx.fillStyle = grad2;
-  ctx.fill();
-  ctx.restore();
-}
-
-function drawBubble(ctx, text, x, y, above, placedBubbles) {
-  const lines = wrapText(ctx, text, 130);
-  const lineH = 15;
-  const bw = 150;
-  const bh = lines.length * lineH + 16;
-  const offset = 20;
-  const bounds = {
-    left: PAD.left + 4,
-    right: getW() - PAD.right - 4,
-    top: PAD.top + 4,
-    bottom: getH() - PAD.bottom - 4
-  };
-  const candidates = getBubbleCandidates(x, y, bw, bh, offset, above, bounds);
-  const chosen = candidates.find(r => !placedBubbles.some(p => rectsOverlap(r, p, 8))) || candidates[0];
-  placedBubbles.push(chosen);
-  const { bx, by, pointerSide } = chosen;
-
-  ctx.save();
-  ctx.fillStyle = '#fffef0';
-  ctx.strokeStyle = 'rgba(180,160,60,0.35)';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.roundRect(bx, by, bw, bh, 6);
-  ctx.fill();
-  ctx.stroke();
-
-  // Arrow
-  ctx.beginPath();
-  if (pointerSide === 'bottom') {
-    ctx.moveTo(x - 5, by + bh);
-    ctx.lineTo(x + 5, by + bh);
-    ctx.lineTo(x, y - offset + 4);
-  } else if (pointerSide === 'top') {
-    ctx.moveTo(x - 5, by);
-    ctx.lineTo(x + 5, by);
-    ctx.lineTo(x, y + offset - 4);
-  } else if (pointerSide === 'left') {
-    ctx.moveTo(bx, by + bh / 2 - 5);
-    ctx.lineTo(bx, by + bh / 2 + 5);
-    ctx.lineTo(x + offset - 4, y);
-  } else {
-    ctx.moveTo(bx + bw, by + bh / 2 - 5);
-    ctx.lineTo(bx + bw, by + bh / 2 + 5);
-    ctx.lineTo(x - offset + 4, y);
-  }
-  ctx.fillStyle = '#fffef0';
-  ctx.fill();
-
-  ctx.fillStyle = '#333';
-  ctx.font = '11px Noto Sans KR';
-  ctx.textAlign = 'left';
-  lines.forEach((line, i) => {
-    ctx.fillText(line, bx + 8, by + 12 + i * lineH);
-  });
-  ctx.restore();
-}
-
-function getBubbleCandidates(x, y, bw, bh, offset, preferAbove, bounds) {
-  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-  const make = (bx, by, pointerSide) => ({
-    bx: clamp(bx, bounds.left, bounds.right - bw),
-    by: clamp(by, bounds.top, bounds.bottom - bh),
-    bw,
-    bh,
-    pointerSide
-  });
-  const above = () => make(x - bw / 2, y - offset - bh, 'bottom');
-  const below = () => make(x - bw / 2, y + offset, 'top');
-  const right = () => make(x + offset, y - bh / 2, 'left');
-  const left = () => make(x - offset - bw, y - bh / 2, 'right');
-  const shiftedAbove = () => make(x - bw / 2 + bw * 0.45, y - offset - bh, 'bottom');
-  const shiftedBelow = () => make(x - bw / 2 - bw * 0.45, y + offset, 'top');
-  return preferAbove
-    ? [above(), right(), left(), below(), shiftedAbove(), shiftedBelow()]
-    : [below(), right(), left(), above(), shiftedBelow(), shiftedAbove()];
-}
-
-function rectsOverlap(a, b, gap = 0) {
-  return !(
-    a.bx + a.bw + gap < b.bx ||
-    b.bx + b.bw + gap < a.bx ||
-    a.by + a.bh + gap < b.by ||
-    b.by + b.bh + gap < a.by
-  );
-}
-
-function wrapText(ctx, text, maxW) {
-  const words = text.split('');
-  const lines = [];
-  let cur = '';
-  for (const ch of text) {
-    const test = cur + ch;
-    if (ctx.measureText(test).width > maxW && cur) {
-      lines.push(cur);
-      cur = ch;
+    // circle
+    ctx.beginPath(); ctx.arc(x,y,isD?PR+2:PR,0,Math.PI*2);
+    ctx.fillStyle=p.score>=0?C.up:C.down; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2.5; ctx.stroke();
+    // icon or age
+    const icon = p.type ? TYPE_ICONS[p.type] : null;
+    if (icon) {
+      ctx.fillStyle = '#fff';
+      ctx.font=`${PR-2}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", serif`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(icon, x, y+1);
     } else {
-      cur = test;
+      ctx.fillStyle='#fff'; ctx.font=`bold 11px Noto Sans KR`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(p.age, x, y);
     }
+    ctx.textBaseline='alphabetic';
+    // age below icon
+    if (icon) {
+      ctx.fillStyle=C.label; ctx.font='10px Noto Sans KR';
+      ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.fillText(p.age, x, y+PR+11);
+    }
+  });
+}
+
+function drawCurve(s) {
+  ctx.moveTo(aX(s[0].age),sY(s[0].score));
+  for (let i=0;i<s.length-1;i++) {
+    const x0=aX(s[i].age),y0=sY(s[i].score),x1=aX(s[i+1].age),y1=sY(s[i+1].score);
+    ctx.bezierCurveTo((x0+x1)/2,y0,(x0+x1)/2,y1,x1,y1);
+  }
+}
+
+function drawFill(s, mid, w, h) {
+  const path = () => {
+    ctx.moveTo(aX(s[0].age),mid); ctx.lineTo(aX(s[0].age),sY(s[0].score));
+    if (curveStyle==='curve') {
+      for (let i=0;i<s.length-1;i++) {
+        const x0=aX(s[i].age),y0=sY(s[i].score),x1=aX(s[i+1].age),y1=sY(s[i+1].score);
+        ctx.bezierCurveTo((x0+x1)/2,y0,(x0+x1)/2,y1,x1,y1);
+      }
+    } else s.forEach(p=>ctx.lineTo(aX(p.age),sY(p.score)));
+    ctx.lineTo(aX(s[s.length-1].age),mid); ctx.closePath();
+  };
+  // up fill
+  ctx.save(); ctx.beginPath(); path();
+  const gu=ctx.createLinearGradient(0,PAD.top,0,mid);
+  gu.addColorStop(0,'rgba(22,163,74,0.14)'); gu.addColorStop(1,'rgba(22,163,74,0.0)');
+  ctx.fillStyle=gu; ctx.fill(); ctx.restore();
+  // down fill
+  ctx.save(); ctx.beginPath(); path();
+  const gd=ctx.createLinearGradient(0,mid,0,h-PAD.bottom);
+  gd.addColorStop(0,'rgba(220,79,0,0.0)'); gd.addColorStop(1,'rgba(220,79,0,0.14)');
+  ctx.fillStyle=gd; ctx.fill(); ctx.restore();
+}
+
+function drawBubble(p) {
+  const x=aX(p.age), y=sY(p.score), above=p.score>=0;
+  const icon = p.type ? TYPE_ICONS[p.type]+' ' : '';
+  const lines = wrapText(icon+p.memo, 136);
+  const lh=15, bw=158, bh=lines.length*lh+18, off=PR+8;
+  let by = above ? y-off-bh : y+off;
+  let bx = Math.max(PAD.left+2, Math.min(gW()-PAD.right-bw-2, x-bw/2));
+  by = Math.max(4, Math.min(gH()-bh-4, by));
+
+  ctx.save();
+  // shadow
+  ctx.shadowColor='rgba(0,0,0,0.08)'; ctx.shadowBlur=8; ctx.shadowOffsetY=2;
+  ctx.fillStyle='#fffef0'; ctx.strokeStyle='rgba(180,160,60,0.35)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,6); ctx.fill(); ctx.stroke();
+  ctx.shadowColor='transparent';
+  // arrow
+  ctx.beginPath();
+  if (above) { ctx.moveTo(x-5,by+bh); ctx.lineTo(x+5,by+bh); ctx.lineTo(x,y-off+4); }
+  else        { ctx.moveTo(x-5,by);    ctx.lineTo(x+5,by);    ctx.lineTo(x,y+off-4); }
+  ctx.fillStyle='#fffef0'; ctx.fill();
+  // text
+  ctx.fillStyle='#3a3530'; ctx.font='11px Noto Sans KR'; ctx.textAlign='left';
+  lines.forEach((l,i) => ctx.fillText(l, bx+8, by+13+i*lh));
+  ctx.restore();
+}
+
+function wrapText(text, maxW) {
+  const lines=[]; let cur='';
+  for (const ch of text) {
+    const t=cur+ch;
+    if (ctx.measureText(t).width>maxW && cur) { lines.push(cur); cur=ch; }
+    else cur=t;
   }
   if (cur) lines.push(cur);
-  return lines.slice(0, 4);
+  return lines.slice(0,5);
 }
 
-// Hit test
-function hitTest(mx, my) {
-  for (let i = 0; i < points.length; i++) {
-    if (!isPointVisible(points[i])) continue;
-    const x = ageToX(points[i].age);
-    const y = scoreToY(points[i].score);
-    const dx = mx - x, dy = my - y;
-    if (Math.sqrt(dx*dx + dy*dy) < POINT_R + 4) return i;
+/* ─── Hit test ─── */
+function hit(mx,my) {
+  for (let i=0;i<points.length;i++) {
+    const dx=mx-aX(points[i].age), dy=my-sY(points[i].score);
+    if (Math.sqrt(dx*dx+dy*dy)<PR+5) return i;
   }
   return -1;
 }
 
-function isPointVisible(point) {
-  return point.age >= ageStart && point.age <= ageEnd;
-}
-
-// Mouse / touch events
-function getEventPos(e) {
-  const rect = canvas.getBoundingClientRect();
-  if (e.touches) {
-    return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
-  }
-  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+/* ─── Events ─── */
+function ePos(e) {
+  const r=canvas.getBoundingClientRect();
+  if (e.touches) return {x:e.touches[0].clientX-r.left, y:e.touches[0].clientY-r.top};
+  return {x:e.clientX-r.left, y:e.clientY-r.top};
 }
 
 canvas.addEventListener('mousedown', onDown);
-canvas.addEventListener('touchstart', onDown, { passive: false });
-
+canvas.addEventListener('touchstart', onDown, {passive:false});
 function onDown(e) {
-  e.preventDefault();
-  closePopup();
-  const { x, y } = getEventPos(e);
-  const idx = hitTest(x, y);
-  if (idx >= 0) {
-    dragging = { idx, startY: y };
-    canvas.classList.add('dragging');
-  } else {
-    // Add new point
-    const age = Math.round(xToAge(x));
-    const score = Math.round(yToScore(y));
-    if (age >= ageStart && age <= ageEnd) {
-      const sameAgeIdx = points.findIndex(p => p.age === age);
-      if (sameAgeIdx >= 0) {
-        points[sameAgeIdx].score = score;
-        draw();
-        openPopup(sameAgeIdx, e, false);
-        return;
-      }
-      points.push({ age, score, memo: '' });
-      const newIdx = points.length - 1;
-      draw();
-      openPopup(newIdx, e, true);
+  e.preventDefault(); closePopup(false);
+  const {x,y}=ePos(e), idx=hit(x,y);
+  if (idx>=0) { dragging={idx,startY:y}; canvas.classList.add('drag'); }
+  else {
+    const age=Math.round(xA(x)), score=Math.max(-100,Math.min(100,Math.round(yS(y))));
+    if (age>=ageStart && age<=ageEnd) {
+      points.push({age,score,memo:'',type:''});
+      draw(); openPopup(points.length-1, e, true);
     }
   }
 }
 
 canvas.addEventListener('mousemove', onMove);
-canvas.addEventListener('touchmove', onMove, { passive: false });
-
+canvas.addEventListener('touchmove', onMove, {passive:false});
 function onMove(e) {
   e.preventDefault();
-  const { x, y } = getEventPos(e);
+  const {x,y}=ePos(e);
   if (dragging) {
-    const score = Math.max(-100, Math.min(100, Math.round(yToScore(y))));
-    points[dragging.idx].score = score;
+    points[dragging.idx].score=Math.max(-100,Math.min(100,Math.round(yS(y))));
     draw();
   } else {
-    const idx = hitTest(x, y);
-    if (idx !== hoveredIdx) {
-      hoveredIdx = idx;
-      canvas.classList.toggle('hovering', idx >= 0);
+    const idx=hit(x,y);
+    if (idx!==hoveredIdx) {
+      hoveredIdx=idx;
+      canvas.classList.toggle('hov', idx>=0);
       draw();
     }
   }
@@ -829,211 +611,113 @@ function onMove(e) {
 
 canvas.addEventListener('mouseup', onUp);
 canvas.addEventListener('touchend', onUp);
-
 function onUp(e) {
-  if (dragging) {
-    const wasDragging = dragging;
-    const { x, y } = e.changedTouches ? 
-      { x: e.changedTouches[0].clientX - canvas.getBoundingClientRect().left,
-        y: e.changedTouches[0].clientY - canvas.getBoundingClientRect().top } :
-      { x: e.clientX - canvas.getBoundingClientRect().left,
-        y: e.clientY - canvas.getBoundingClientRect().top };
-    const dy = Math.abs(y - wasDragging.startY);
-    if (dy < 5) {
-      openPopup(wasDragging.idx, e, false);
-    }
-    dragging = null;
-    canvas.classList.remove('dragging');
-    draw();
-  }
-}
-
-canvas.addEventListener('mouseleave', () => {
-  hoveredIdx = null;
-  canvas.classList.remove('hovering');
+  if (!dragging) return;
+  const d=dragging; dragging=null; canvas.classList.remove('drag');
+  const r=canvas.getBoundingClientRect();
+  const cy=e.changedTouches?e.changedTouches[0].clientY-r.top:e.clientY-r.top;
+  if (Math.abs(cy-d.startY)<6) openPopup(d.idx, e, false);
   draw();
-});
-
-// Popup
-function openPopup(idx, e, isNew = false) {
-  editingIdx = idx;
-  isNewPoint = isNew;
-  const p = points[idx];
-  document.getElementById('popup-age').value = p.age;
-  document.getElementById('popup-score').value = p.score;
-  document.getElementById('popup-memo').value = p.memo || '';
-
-  const rect = canvas.getBoundingClientRect();
-  const px = ageToX(p.age) + rect.left;
-  const py = scoreToY(p.score) + rect.top;
-
-  popup.style.display = 'block';
-  const pw = 240, ph = 260;
-  let left = px + 12;
-  let top = py - ph / 2;
-  if (left + pw > window.innerWidth - 10) left = px - pw - 12;
-  if (top < 10) top = 10;
-  if (top + ph > window.innerHeight - 10) top = window.innerHeight - ph - 10;
-  popup.style.left = left + 'px';
-  popup.style.top = top + 'px';
-  popup.classList.add('visible');
-  document.getElementById('popup-memo').focus();
 }
 
-function closePopup() {
-  popup.classList.remove('visible');
-  popup.style.display = 'none';
-  editingIdx = null;
-  isNewPoint = false;
+canvas.addEventListener('mouseleave', ()=>{ hoveredIdx=null; canvas.classList.remove('hov'); draw(); });
+
+/* ─── Popup ─── */
+function openPopup(idx, e, isNew=false) {
+  editingIdx=idx; isNewPoint=isNew;
+  const p=points[idx];
+  document.getElementById('p-age').value   = p.age;
+  document.getElementById('p-score').value = p.score;
+  document.getElementById('p-memo').value  = p.memo||'';
+  document.getElementById('p-type').value  = p.type||'';
+  popup.style.display='block';
+  const r=canvas.getBoundingClientRect();
+  const px=aX(p.age)+r.left, py=sY(p.score)+r.top;
+  const pw=252, ph=290;
+  let left=px+14, top=py-ph/2;
+  if (left+pw>window.innerWidth-8) left=px-pw-14;
+  top=Math.max(8, Math.min(window.innerHeight-ph-8, top));
+  popup.style.left=left+'px'; popup.style.top=top+'px';
+  popup.classList.add('vis');
+  document.getElementById('p-memo').focus();
 }
 
-function cancelPopup() {
-  if (isNewPoint && editingIdx !== null) {
-    points.splice(editingIdx, 1);
-    draw();
+function closePopup(restoreNew=true) {
+  if (restoreNew && isNewPoint && editingIdx!==null) {
+    points.splice(editingIdx,1); draw();
   }
-  closePopup();
+  popup.classList.remove('vis'); popup.style.display='none';
+  editingIdx=null; isNewPoint=false;
 }
+
+function cancelPopup() { closePopup(true); }
 
 function savePoint() {
-  if (editingIdx === null) return;
-  const age = parseInt(document.getElementById('popup-age').value);
-  const score = Math.max(-100, Math.min(100, parseInt(document.getElementById('popup-score').value)));
-  const memo = document.getElementById('popup-memo').value.trim();
-  const nextAge = Math.max(ageStart, Math.min(ageEnd, age));
-  const existingIdx = points.findIndex((p, i) => i !== editingIdx && p.age === nextAge);
-  if (existingIdx >= 0) {
-    points[existingIdx] = { age: nextAge, score, memo };
-    points.splice(editingIdx, 1);
-  } else {
-    points[editingIdx] = { age: nextAge, score, memo };
-  }
-  closePopup();
-  draw();
+  if (editingIdx===null) return;
+  const age   = Math.max(ageStart, Math.min(ageEnd, parseInt(document.getElementById('p-age').value)||0));
+  const score = Math.max(-100, Math.min(100, parseInt(document.getElementById('p-score').value)||0));
+  const memo  = document.getElementById('p-memo').value.trim();
+  const type  = document.getElementById('p-type').value;
+  points[editingIdx]={age,score,memo,type};
+  closePopup(false); draw();
 }
 
 function deletePoint() {
-  if (editingIdx === null) return;
-  points.splice(editingIdx, 1);
-  closePopup();
-  draw();
-}
-
-function normalizePoints(list) {
-  const byAge = new Map();
-  list.forEach(p => {
-    const age = parseInt(p.age);
-    const score = Math.max(-100, Math.min(100, parseInt(p.score)));
-    const memo = (p.memo || '').trim();
-    if (!Number.isFinite(age) || !Number.isFinite(score)) return;
-    if (!byAge.has(age)) {
-      byAge.set(age, { age, score, memo });
-      return;
-    }
-    const prev = byAge.get(age);
-    const memos = [prev.memo, memo].filter(Boolean);
-    prev.score = score;
-    prev.memo = [...new Set(memos)].join('\n');
-  });
-  return [...byAge.values()].sort((a, b) => a.age - b.age);
+  if (editingIdx===null) return;
+  points.splice(editingIdx,1);
+  closePopup(false); draw();
 }
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') cancelPopup();
-  if ((e.key === 'Enter') && editingIdx !== null && !e.shiftKey) {
-    if (document.activeElement !== document.getElementById('popup-memo')) savePoint();
-  }
+  if (e.key==='Escape') cancelPopup();
+  if (e.key==='Enter' && editingIdx!==null && !e.shiftKey && document.activeElement!==document.getElementById('p-memo')) savePoint();
 });
 
+/* ─── Controls ─── */
 function setStyle(s) {
-  curveStyle = s;
-  document.getElementById('btn-curve').classList.toggle('active', s === 'curve');
-  document.getElementById('btn-line').classList.toggle('active', s === 'line');
+  curveStyle=s;
+  document.getElementById('btn-curve').classList.toggle('on', s==='curve');
+  document.getElementById('btn-line').classList.toggle('on',  s==='line');
   draw();
 }
-
 function toggleLabels() {
-  showLabels = !showLabels;
-  document.getElementById('btn-labels').classList.toggle('active', showLabels);
-  document.getElementById('btn-labels').textContent = showLabels ? '표시' : '숨김';
+  showLabels=!showLabels;
+  const b=document.getElementById('btn-labels');
+  b.classList.toggle('on', showLabels); b.textContent=showLabels?'표시':'숨김';
   draw();
 }
-
 function rebuildAxis() {
-  ageStart = parseInt(document.getElementById('age-start').value) || 5;
-  ageEnd = parseInt(document.getElementById('age-end').value) || 35;
+  ageStart=parseInt(document.getElementById('age-start').value)||5;
+  ageEnd  =parseInt(document.getElementById('age-end').value)  ||35;
   draw();
 }
 
-function printLifeGraph() {
-  draw();
-  document.getElementById('print-title').textContent = document.querySelector('.header-left h1, .hdr-title')?.textContent || 'Life Graph';
-  document.getElementById('print-subtitle').textContent = `Age ${ageStart} - ${ageEnd}`;
-  document.getElementById('print-image').src = canvas.toDataURL('image/png');
-  document.body.classList.add('printing-life');
-  window.print();
-}
-
-window.addEventListener('afterprint', () => {
-  document.body.classList.remove('printing-life');
-});
-
-function printLifeGraphWindow() {
-  printLifeGraph();
-}
-function downloadLifeGraphImage() {
-  draw();
-  const link = document.createElement('a');
-  link.download = 'life-graph.png';
-  link.href = canvas.toDataURL('image/png');
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-}
-
-function escapeHtml(value) {
-  return String(value).replace(/[&<>"']/g, ch => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  }[ch]));
-}
-
+/* ─── Save / Load ─── */
+const KEY='gc_v2';
 function saveData() {
-  try {
-    localStorage.setItem('life_graph_v1', JSON.stringify({ points, ageStart, ageEnd, curveStyle, showLabels }));
-    const ok = document.getElementById('save-ok');
-    ok.style.display = 'flex';
-    setTimeout(() => ok.style.display = 'none', 2000);
-  } catch(e) {}
+  try { localStorage.setItem(KEY, JSON.stringify({points,ageStart,ageEnd,curveStyle,showLabels})); } catch(e){}
+  const ok=document.getElementById('save-ok');
+  ok.style.display='flex'; setTimeout(()=>ok.style.display='none',2000);
 }
-
 function loadData() {
   try {
-    const raw = localStorage.getItem('life_graph_v1');
-    if (!raw) return;
-    const d = JSON.parse(raw);
-    if (d.points) points = normalizePoints(d.points);
-    if (d.ageStart) { ageStart = d.ageStart; document.getElementById('age-start').value = ageStart; }
-    if (d.ageEnd) { ageEnd = d.ageEnd; document.getElementById('age-end').value = ageEnd; }
+    const d=JSON.parse(localStorage.getItem(KEY)||'null');
+    if (!d) return;
+    if (d.points)    { points=d.points; }
+    if (d.ageStart)  { ageStart=d.ageStart; document.getElementById('age-start').value=ageStart; }
+    if (d.ageEnd)    { ageEnd=d.ageEnd;     document.getElementById('age-end').value=ageEnd; }
     if (d.curveStyle) setStyle(d.curveStyle);
-    if (typeof d.showLabels !== 'undefined') { showLabels = d.showLabels; document.getElementById('btn-labels').classList.toggle('active', showLabels); }
+    if (typeof d.showLabels!=='undefined') { showLabels=d.showLabels; const b=document.getElementById('btn-labels'); b.classList.toggle('on',showLabels); b.textContent=showLabels?'표시':'숨김'; }
   } catch(e) {}
 }
-
 function clearAll() {
   if (!confirm('모든 포인트를 초기화할까요?')) return;
-  points = [];
-  try { localStorage.removeItem('life_graph_v1'); } catch(e) {}
+  points=[];
+  try { localStorage.removeItem(KEY); } catch(e){}
   draw();
 }
 
-const ro = new ResizeObserver(() => resizeCanvas());
-ro.observe(wrap);
-loadData();
-resizeCanvas();
+loadData(); resize();
 </script>
 </body>
 </html>
